@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Opplasting fullført";
+}
+
+<input type="hidden" id="status-code" value="@((int)ViewBag.Response.Code)"/>
+<div class="container">
+    <div class="formdiv">
+        <div id="alert-success" class="alert alert-success">
+            <h2 class="alert-heading">Dokumenter lastet opp!</h2>@ViewBag.Response.Message
+            <p id="timer-text"></p>
+        </div>
+        <br />
+        <div id="alert-error">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Melding fra server:</h4>@ViewBag.Response.Message
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                @Html.ActionLink("Velg en annen ansatt", "Index", "Home", new { area = "" }, new { @class = "btn btn-primary btn-lg btn-block" })
+            </div>
+            <div class="col-md-6">
+                @Html.ActionLink("Last opp flere dokumenter", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-primary btn-lg btn-block" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var statusCode = $('#status-code').val();
+
+        console.log('s: ' + statusCode);
+
+        if (statusCode == 0) {
+            $('#alert-error').prop('hidden', true);
+        } else if (statusCode == 1) {
+            $('#alert-success').prop('hidden', true);
+        }
+
+        if (statusCode == 0) {
+
+            var timer = 10;
+            // <h4 class="alert-heading">Gratulerer!</h4>Alt ser ut til å være i orden. Men hvis vi finner ut at det er noe lureri på gang, så stakkars deg!
+            var x = setInterval(function () {
+                // send bruker tilbake til visma portal etter 10s.
+                document.getElementById("timer-text").textContent = "Du blir sendt tilbake til Visma portal om " + timer + " sekund" + (timer != 1 ? "er" : "") +  "...";
+                timer--;
+
+                if (timer < 0) {
+                    clearInterval(x);
+
+                    window.location.replace("https://enterprise.narvik.kommune.no/");
+                }
+            }, 1000);
+        }
+    });
+
+</script>

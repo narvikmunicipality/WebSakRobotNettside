@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Bekreftelse på formål";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div id="txt-police-form">
+                    @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                    <h2>
+                        Bekreftelse på formål - vedlegg til søknad om politiattest
+                    </h2>
+                    <p>
+                        Fylles ut av arbeids-/oppdragsgiver og legges ved søknad om politiattest av den ansatte.
+                        Alle felt må være utfylt for at søknaden skal kunne behandles.
+                    </p>
+                </div>
+            </div>
+            <div class="panel-body" id="police-form">
+
+                @using (Html.BeginForm("UploadPoliceForm", "Upload", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ansattnavn">Fornavn (arbeidstaker/søker av politiattest)</label>
+                                <input type="text" id="input-police-form-firstname" class="form-control" name="ansattfornavn" autocomplete="off" placeholder="Fornavn" value="@(ViewBag.Ansattnr != "-1" ? ViewBag.Ansattfornavn : "")" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ansattnavn">Etternavn</label>
+                                <input type="text" id="input-police-form-surname" class="form-control" name="ansattetternavn" autocomplete="off" placeholder="Etternavn" value="@(ViewBag.Ansattnr != "-1" ? ViewBag.Ansattetternavn : "")" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="personnr">Fødselsnummer</label>
+                                <input type="text" class="form-control" name="personnr" autocomplete="off" placeholder="Fødselsnummer (11 siffer)" required maxlength="11" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="formaal">Formål med politiattest</label>
+                                <select class="form-control" name="formaal" required>
+                                    <option disabled selected value="">Formål med politiattest</option>
+                                    @foreach (var hjemmel in ViewBag.LovhjemmelListe)
+                                    {
+                                        <option value="@hjemmel.Navn" title="@hjemmel.Beskrivelse">@hjemmel.Navn</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label for="stilling">Stillingen gjelder</label>
+                                <input type="text" class="form-control" name="stilling" placeholder="Beskrivelse av stilling" required />
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="stillingstype">Stillingstype</label>
+                                <br />
+                                <label><input type="radio" name="stillingstype" value="Fast stilling" required />Fast stilling</label>
+                                <label><input type="radio" name="stillingstype" value="Midlertidlig stilling/oppdrag" />Midlertidlig stilling/oppdrag</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="oppdragsgiver">Arbeids/oppdragsgiver (den som krever attest)</label>
+                                <input type="text" class="form-control" name="oppdragsgiver" placeholder="Arbeids/oppdragsgiver (den som krever attest)" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="kontaktinfo">Kontaktinformasjon til arbeids-/oppdragsgiver: (telefon/e-postadresse, dersom vi behøver mer informasjon)</label>
+                                <input type="text" class="form-control" name="kontaktinfo" placeholder="Kontaktinformasjon til arbeids-/oppdragsgiver: (telefon/e-postadresse, dersom vi behøver mer informasjon)" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stedDato">Sted og dato</label>
+                                <input type="text" class="form-control" name="stedDato" placeholder="Sted og dato" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <button type="submit" class="btn btn-lg btn-success">Send ut brev</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

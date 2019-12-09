@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Søknad om tildeling av fullmakt til å foreta anvisning";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div id="txt-police-form">
+                    @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                    <h2>
+                        @ViewBag.Title
+                    </h2>
+                </div>
+            </div>
+            <div class="panel-body" id="fullmakt-form">
+
+                @using (Html.BeginForm("UploadFullmakt", "Upload", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                {
+                    <p>
+                        Med dette søkes det om at @ViewBag.Ansattnavn i forbindelse med sitt arbeide som
+                    </p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="stilling" placeholder="Stilling" required />
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        får fullmakt til å anvise regninger på følgende budsjettansvarsområde (budsjettkapitler/konti):
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="konto">Konto (art)</label>
+                                <input type="text" class="form-control" name="konto" placeholder="Konto (art)" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ansvar">Ansvar</label>
+                                <input type="text" class="form-control" name="ansvar" placeholder="Ansvar" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tjeneste">Tjeneste</label>
+                                <input type="text" class="form-control" name="tjeneste" placeholder="Tjeneste" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <button type="submit" class="btn btn-lg btn-success">Send søknad til signering og arkivering</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

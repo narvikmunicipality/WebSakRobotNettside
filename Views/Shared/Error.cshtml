@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "En feil har oppstått";
+}
+
+@{
+    Random rnd = new Random();
+    var c = rnd.Next(1_000_000, 1_000_000_000).ToString("X");
+}
+
+<h1 class="text-danger">Saft suse*!</h1>
+<h2 class="text-danger">Beklager, teknisk feil. Prøv igjen</h2>
+<p class="text-danger">Feilkode: 0X@(c)</p>
+@using (Html.BeginForm("SendErrorReportMail", "Home", method: FormMethod.Post, htmlAttributes: new { id = "form-exception", enctype = "multipart/form-data"}))
+{
+    <input type="hidden" name="exception" value="@Model.Exception.ToString()"/>
+    <br />
+    <button type="submit" class="btn btn-primary">Meld fra om feil</button>
+}

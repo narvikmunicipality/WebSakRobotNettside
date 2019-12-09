@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "Oversikt over superbrukere";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>
+                    Superbrukere har tilgang til å administrere testbrukere, e-signeringsdokumenter, gi superbrukertilgang til andre
+                    og se logger og status. Superbrukere kan også laste opp dokumenter på vegne av ALLE ansatte.
+                </p>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped" id="table-superusers">
+                    <tr>
+                        <th>
+                            AD-brukernavn
+                        </th>
+                        <th>
+                            E-postadresse
+                        </th>
+                        <th>
+                            Motta varsler
+                        </th>
+                        <th>
+                            Fjern superbrukerstatus
+                        </th>
+                    </tr>
+                    @*https://stackoverflow.com/questions/43021/how-do-you-get-the-index-of-the-current-iteration-of-a-foreach-loop*@
+                    @foreach ((Bundles.LederInfo superuser, int i) in AnsattHelper.Superbrukere.Select((superuser, i) => (superuser, i)))
+                    {
+                        <tr>
+                            <td>
+                                @superuser.AD
+                            </td>
+                            <td>
+                                @superuser.EPost
+                            </td>
+                            <td>
+                                <div class="checkbox">
+                                    <label style="font-size: 1.5em">
+                                        @if (superuser.MottaFeilmeldinger)
+                                        {
+                                            <input type="checkbox" id="send-kopi-@i" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" id="send-kopi-@i">
+                                        }
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("DeleteSuperUser", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "delete-superuser-" + superuser.AD, enctype = "multipart/form-data", onsubmit = "return confirm('Fjerne superbrukerstatus fra " + superuser.AD + "?')" }))
+                                {
+                                    <input type="hidden" name="ad" value="@superuser.AD" />
+                                    if (!User.Identity.Name.Split('\\').Last().ToUpper().Equals(superuser.AD.ToUpper()))
+                                    {
+                                        <button type="submit" class="btn btn-danger">X</button>
+                                    }
+                                    else
+                                    {
+                                        <p><i>(Deg selv)</i></p>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+                @using (Html.BeginForm("UpdateSuperUsers", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "form-update-superusers", enctype = "multipart/form-data", onsubmit = "return confirmUpdateSuperUser()" }))
+                {
+                    <button type="submit" class="btn btn-success">Oppdater varslingsinnstillinger</button>
+                }
+                <hr />
+                <button type="button" class="btn btn-success" onclick="showNewSuperUserForm()">Legg til en superbruker</button>
+                <br />
+                <br />
+                @using (Html.BeginForm("AddSuperUser", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "form-create-superuser", enctype = "multipart/form-data", onsubmit = "return confirmCreateSuperUser()" }))
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" id="AD-bruker" name="ADbrukernavn" class="form-control" maxlength="10" required placeholder="AD-brukernavn" />
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-success">Gi tilgang</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#form-create-superuser').hide();
+    });
+
+    function showNewSuperUserForm() {
+        $('#form-create-superuser').show();
+    }
+
+    function confirmCreateSuperUser() {
+        var username = $('#AD-bruker').val();
+        return confirm('Gi superbrukertilgang til ' + username + '? Husk at de vil bli i stand til å administrere nettsiden og laste opp dokumenter på alle ansatte. Bare gi superbrukertilgang til folk du stoler på.');
+    }
+
+    function confirmUpdateSuperUser() {
+        var mottakere = 0;
+
+        var rows = document.getElementById("table-superusers").getElementsByTagName("tr").length;
+        console.log(rows);
+        $('input[name=updateADBruker]').remove();
+        //var arr = new Array();
+        for (var i = 0; i < rows - 1; i++) {
+            var s = $('#send-kopi-' + i).is(':checked');
+            $('#form-update-superusers').append('<input type="hidden" name="updateADBruker" value="' + s + '" />');
+            if (s)
+                mottakere++;
+        }
+
+        if (mottakere > 0) {
+            return true;
+        } else {
+            return confirm("Ingen superbrukere er satt til å motta varsler. Fortsette?");
+        }
+    }
+</script>

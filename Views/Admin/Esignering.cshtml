@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Aktive e-signeringsoppdrag";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>Aktive e-signeringsoppdrag</h2>
+            </div>
+            <div class="panel-body">
+                @if (ViewBag.AktiveOppdrag.Count > 0)
+                {
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                Dato opprettet
+                            </th>
+                            <th>
+                                Mottaker
+                            </th>
+                            <th>
+                                Dato signert
+                            </th>
+                            <th>
+                                Merknader
+                            </th>
+                            <th>
+                                Valg
+                            </th>
+                        </tr>
+
+                        @foreach (Bundles.ESignInfo esign in ViewBag.AktiveOppdrag)
+                        {
+                            <tr>
+                                <td>
+                                    @esign.Dato
+                                </td>
+                                <td>
+                                    @esign.Mottaker
+                                </td>
+                                <td>
+                                    @esign.SignDato
+                                </td>
+                                <td>
+                                    @esign.Status
+                                </td>
+                                <td>
+                                    @if (!esign.Signert)
+                                    {
+                                        <a href="@String.Format(StringConstants.PURRE_MAIL_LINK, esign.MottakerEpost)" class="btn btn-info" target="_blank">Send purring</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <button type="button" class="btn btn-info" onclick="sendPurringTilAlle()">Send purring til alle mottakere som ikke har signert</button>
+                }
+                else
+                {
+                    <p>Du har ingen aktive signeringsoppdrag</p>
+                }
+                <hr />
+            </div>
+            <div class="panel-heading">
+                <h2>Fullførte e-signeringsoppdrag</h2>
+            </div>
+            <div class="panel-body">
+                @if (ViewBag.FullforteOppdrag.Count > 0)
+                {
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                Dato opprettet
+                            </th>
+                            <th>
+                                Mottaker
+                            </th>
+                            <th>
+                                Dato signert
+                            </th>
+                            <th>
+                                JournalpostID
+                            </th>
+                        </tr>
+
+                        @foreach (Bundles.ESignInfo esign in ViewBag.FullforteOppdrag)
+                        {
+                            <tr>
+                                <td>
+                                    @esign.Dato
+                                </td>
+                                <td>
+                                    @esign.Mottaker
+                                </td>
+                                <td>
+                                    @esign.SignDato
+                                </td>
+                                <td>
+                                    @esign.JournalpostID
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <p>Ingen historikk funnet</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function sendPurringTilAlle() {
+        if (confirm("Vil du sende purring til alle?")) {
+            alert ("Purringer sendt! Da får vi håpe det blir fart på sakene...")
+        }
+    }
+
+    function sendPurring(ansattnavn, ansattnr) {
+        if (confirm("Vil du sende purring til " + ansattnavn + "? ")) {
+            alert("Purring sendt! Da får vi håpe det blir fart på sakene...")
+        }
+    }
+</script>

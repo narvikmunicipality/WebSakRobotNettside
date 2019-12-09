@@ -1,0 +1,275 @@
+﻿
+@{
+    ViewBag.Title = "Status og logger";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+            </div>
+            <div class="panel-body" id="panel-main">
+                <h3>Dagens aktivitet</h3>
+                <p>Antall sendte varsler totalt: <b>@ViewBag.TodayCount</b></p>
+                <p>Antall sykefraværsoppfølginger: <b>@ViewBag.SykefraværCount</b></p>
+                <p>Antall ansattforholddokumenter: <b>@ViewBag.AnsattforholdCount</b></p>
+                <p>Sum antall opplastinger: <b>@ViewBag.CurrentDayCount</b></p>
+                <hr />
+                <h3>Varsler sendt/oppfølginger arkivert siste fire uker</h3>
+                @if (ViewBag.LederVarsler.Count > 0)
+                {
+                    <table class="table table-striped" id="table-uploads">
+                        <tr>
+                            <th onclick="sortTable()" style="cursor:pointer">
+                                Navn
+                            </th>
+                            <th>
+                                Dag 5
+                            </th>
+                            <th>
+                                Dag 14
+                            </th>
+                            <th>
+                                Dag 28
+                            </th>
+                            <th>
+                                Utført
+                            </th>
+                        </tr>
+
+                        @foreach (VarselLeder varsel in ViewBag.LederVarsler)
+                        {
+                        <tr class="item">
+                            <td>
+                                @varsel.User
+                            </td>
+                            <td>
+                                @varsel.Dag5
+                            </td>
+                            <td>
+                                @varsel.Dag14
+                            </td>
+                            <td>
+                                @varsel.Dag28
+                            </td>
+                            <td>
+                                @varsel.PS%
+                            </td>
+                        </tr>
+                        }
+                    </table>
+                }
+                <p><i>@ViewBag.DateMod</i></p>
+                <h3>Sum sendte varsler siste fire uker</h3>
+                @if (ViewBag.msgVarselFeil != null)
+                {
+                    @Html.Raw(ViewBag.msgVarselFeil)
+                }
+                else
+                {
+                    <p>Antall sendte varsel dag 5: <b>@ViewBag.Dag5Count</b></p>
+                    <p>Antall sendte varsel dag 14: <b>@ViewBag.Dag14Count</b></p>
+                    <p>Antall sendte varsel dag 28: <b>@ViewBag.Dag28Count</b></p>
+                }
+                <hr />
+                <canvas id="plot-legend" width="660" height="60" style="border:1px solid #000000;"></canvas>
+                <canvas id="plot-varsler" width="660" height="360" style="border:1px solid #000000;"></canvas>
+                <hr />
+                <h3>Totalt antall opplastinger</h3>
+                <div id="minDate-previous" class="btn btn-info">Forrige måned</div>
+                <div id="minDate-next" class="btn btn-info">Neste måned</div>
+                <div id="cal-heatmap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/cal-heatmap-master/moment-with-locales.js"></script>
+<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="~/Content/cal-heatmap.css" />
+<script src="~/Scripts/cal-heatmap-master/cal-heatmap.min.js"></script>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+<script type="text/javascript">
+
+    function sortTable() {
+        w3.sortHTML('#table-uploads', '.item', 'td:nth-child(1)')
+    }
+
+    window.onresize = function () { draw(); };
+
+    var cal = new CalHeatMap();
+    //var jsonData = $("#json-data");
+    var date = new Date();
+    date.setMonth(date.getMonth() - 3);
+
+    cal.init({
+        data: 'GetUploadData',
+        start: date,
+        minDate: new Date(2018, 9),
+        maxDate: new Date(),
+        domain: "month",
+        subDomain: "x_day",
+        cellSize: 20,
+        //considerMissingDataAsZero: true,
+        subDomainTextFormat: function (date, value) { return value; },
+        domainGutter: 10,
+        range: 4,
+        verticalOrientation: false,
+        domainLabelFormat: function (date) {
+            moment.locale("nb");
+            return moment(date).format("MMMM YYYY").toUpperCase();
+        },
+        label: {
+            position: "top",
+            rotate: "",
+            offset: { x: 15, y: 10 }
+        }, displayLegend: true,
+        legend: [5, 15, 25],
+        highlight: "now"
+    });
+
+    $("#minDate-previous").on("click", function (e) {
+        e.preventDefault();
+        cal.previous();
+    });
+
+    $("#minDate-next").on("click", function (e) {
+        e.preventDefault();
+        cal.next();
+    });
+
+    var w = 660;
+    var h = 320;
+    var maxDataValue = 0;
+    draw();
+
+    //canvas kode
+    function draw() {
+        var canvas = document.getElementById("plot-varsler");
+        var ctx = canvas.getContext("2d");
+
+        console.log($('#panel-main').width());
+
+        ctx.canvas.width = Math.min($('#panel-main').width(), 660);
+        //ctx.canvas.height = window.innerWidth;
+
+        w = ctx.canvas.width; // bredde på graf
+        h = 320; // høyde på graf
+
+        var varselData = @Html.Raw(ViewBag.VarselArray);
+        var uploadData = @Html.Raw(ViewBag.UploadArray);
+
+        maxDataValue = Math.max(...varselData); // for å skalere graf
+
+        //console.log(varselData);
+        //console.log(uploadData);
+
+        // bakgrunn
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.fillRect(0, 0, w, h);
+        ctx.stroke();
+
+        // loddrette linjer
+        for (var x = 0; x < 6; x++) {
+            ctx.strokeStyle = "lightgray";
+            ctx.beginPath();
+            ctx.moveTo(x * 110, 0);
+            ctx.lineTo(x * 110, h);
+            ctx.stroke();
+        }
+
+        // vannrette linjer
+        for (var x = 0; x < 5; x++) {
+            ctx.strokeStyle = "lightgray";
+            ctx.beginPath();
+            ctx.moveTo(0, x * 64);
+            ctx.lineTo(w, x * 64);
+            ctx.stroke();
+
+            // antall
+            ctx.beginPath();
+            ctx.font = "18px Arial";
+            ctx.fillStyle = "lightgray";
+            ctx.textAlign = "left";
+            ctx.fillText(maxDataValue - x * Math.round(maxDataValue / 5), 5, x * 64 + 17);
+        }
+
+        // dager
+        //var date = new Date();
+        var s = w / 660 * 153;
+
+        for (var i = 0, j = 4; i < 5; i++, j--) {
+            ctx.beginPath();
+            ctx.font = "18px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";
+
+            ctx.fillText(moment().add(j * -7, 'days').format("DD/MM"), i * s, h + 30);
+        }
+
+        // grafer
+        drawGraph(varselData, ctx, "blue");
+        drawGraph(uploadData, ctx, "red");
+
+        drawLegend();
+
+        // graframme
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.stroke();
+
+    }
+
+    function drawGraph(data, ctx, color) {
+        ctx.beginPath();
+        for (var i = 0; i < data.length - 1; i++) {
+            ctx.strokeStyle = color;
+
+            ctx.moveTo((w - 40) - ((w) * (i / data.length)), h - ((data[i] / maxDataValue) * h));
+            ctx.lineTo((w - 40) - ((w) * ((i + 1) / data.length)), h - ((data[i + 1] / maxDataValue) * h));
+
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    function drawLegend() {
+        var canvasLegend = document.getElementById("plot-legend");
+        var ctx = canvasLegend.getContext("2d");
+
+        ctx.canvas.width = Math.min($('#panel-main').width(), 660);
+
+        ctx.strokeStyle = "blue";
+        ctx.beginPath();
+        ctx.moveTo(10, 15);
+        ctx.lineTo(60, 15);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.strokeStyle = "red";
+        ctx.beginPath();
+        ctx.moveTo(10, 40);
+        ctx.lineTo(60, 40);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.font = "18px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "left";
+        ctx.closePath();
+        ctx.fillText("Varsler fra Visma HRM", 70, 20);
+
+        ctx.beginPath();
+        ctx.font = "18px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "left";
+        ctx.closePath();
+        ctx.fillText("Oppfølgingssamtaler lastet opp til roboten", 70, 50);
+    }
+
+</script>

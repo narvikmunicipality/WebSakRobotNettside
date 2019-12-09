@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Oversikt over testbrukere";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>
+                    Testbrukere kan benyttes av superbrukere under demonstrasjon o.l. av nettsiden, slik at ingen potensielt personvernsensitive data blir vist.
+                    Filer lastet opp på testbrukere blir ignorert av roboten når den importerer dokumenter i WebSak
+                </p>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Ansattnummer
+                        </th>
+                        <th>
+                            Fornavn
+                        </th>
+                        <th>
+                            Etternavn
+                        </th>
+                        <th>
+                            Slett
+                        </th>
+                    </tr>
+
+                    @foreach (Bundles.AnsattInfo testUser in AnsattHelper.Testbrukere)
+                    {
+                        <tr>
+                            <td>
+                                @testUser.AnsattNr
+                            </td>
+                            <td>
+                                @testUser.Fornavn
+                            </td>
+                            <td>
+                                @testUser.Etternavn
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("DeleteTestUser", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "delete-testuser-" + testUser.AnsattNr, enctype = "multipart/form-data", onsubmit="return confirm('Slette testbruker " + testUser.AnsattNr + " " + testUser.Navn + "?')" }))
+                                {
+                                    <input type="hidden" name="id" value="@testUser.AnsattNr"/>
+                                    <button type="submit" class="btn btn-danger">X</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <hr />
+                <button type="button" class="btn btn-success" onclick="showNewTestUserForm()">Lag ny testbruker</button>
+                <br />
+                <br />
+                @using (Html.BeginForm("CreateTestUser", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "form-testuser", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" name="id" class="form-control" maxlength="5" required placeholder="Ansattnummer" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="fornavn" class="form-control" maxlength="32" required placeholder="Fornavn" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="etternavn" class="form-control" maxlength="32" placeholder="Etternavn" />
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-success">Opprett testbruker</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#form-testuser').hide();
+    });
+
+    function showNewTestUserForm() {
+        $('#form-testuser').show();
+    }
+</script>

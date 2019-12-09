@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Velkommen til Robotportalen 🤖";
+}
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Velkommen til Robotportalen <a href="#" onclick="SpeakMOTD()">🤖</a></h2>
+                <h4>Hvilken ansattmappe vil du bruke?</h4>
+                <div class="alert alert-warning">
+                    MERK: Dagens WebSak stenges 16. desember 2019. Etter dette vil det ikke være mulig å bruke roboten
+                    før nye WebSak er på plass. Dokumenter som lastes opp i denne perioden vil ikke bli importert i WebSak.
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ActionLink("Sykefravær", "IdentifiserAnsatt", "Home", routeValues: new { docID = "Sykefraværsmappe" }, htmlAttributes: new { @class = "btn btn-lg btn-primary btn-block" })
+                        <p>@StringConstants.ACTION_SYKEFRAVAR</p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Ansettelsesforhold", "IdentifiserAnsatt", "Home", routeValues: new { docID = "Ansattmappe" }, htmlAttributes: new { @class = "btn btn-lg btn-primary btn-block" })
+                        <p>@StringConstants.ACTION_ANSATTMAPPE</p>
+                    </div>
+                </div>
+                <br />
+                <hr/>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.ActionLink("Send ut dokumenter til elektronisk signering og arkivering", "Index", "Signeringsportal", null, htmlAttributes: new { @class = "btn btn-lg btn-primary btn-block" })
+                        <p>@StringConstants.ACTION_ESIGNERING</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/sam/sam.js"></script>
+<script src="~/Scripts/app-uipath/TalkingBot.js"></script>

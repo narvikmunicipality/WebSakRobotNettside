@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Opplastingslogg for " + ViewBag.Mappetype;
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>
+                    Statistikker, <br />
+                    sånne kurver og litt sånn, "nu er tomatsuppe gått ned og"
+                </p>
+            </div>
+            <div class="panel-body">
+                <h3>Dagens aktivitet</h3>
+                <p>Totalt antall opplastinger: @ViewBag.CurrentDayCount</p>
+                <br />
+                <div id="cal-heatmap"></div>
+            </div>
+        </div>
+    </div>
+</div>

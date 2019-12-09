@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Tilbaketrekking av fullmakt til å foreta anvisning";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div id="txt-police-form">
+                    @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                    <h2>
+                        @ViewBag.Title
+                    </h2>
+                </div>
+            </div>
+            <div class="panel-body" id="fullmakt-form">
+
+                @using (Html.BeginForm("UploadTilbaketrekkingFullmakt", "Upload", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                {
+                    <p>
+                        Rådmannen trekker med dette tilbake anvisningsmyndigheten for:
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Navn
+                        </div>
+                        <div class="col-md-8">
+                            @ViewBag.Ansattnavn
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Stilling
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="stilling" placeholder="Stilling" required />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Gitt
+                        </div>
+                        <div class="col-md-8">
+                            <input type="date" class="form-control" name="gitt" required />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Budsjettansvarsområde
+                        </div>
+                        <div class="col-md-8">
+                            <textarea class="form-control" name="omraade" required></textarea>
+                        </div>
+                    </div>
+                    <br/>
+                    <p>
+                        Tilbaketrekking av fullmakten skyldes:
+                    </p>
+                    <label><input type="radio" name="skyldes" value="Sluttet i stillingen" required />Sluttet i stillingen</label>
+                    <br/>
+                    <label><input type="radio" name="skyldes" value="Overgang til annen stilling" />Overgang til annen stilling</label>
+                    <br/>
+                    <label><input type="radio" name="skyldes" value="Anvisning utover tildelt ramme" />Anvisning utover tildelt ramme</label>
+                    <br/>
+                    <label><input type="radio" name="skyldes" value="Annet (spesifiser)" />Annet (spesifiser)</label>
+                    <br/>
+                    <input type="text" class="form-control" name="annet" placeholder="Annet (Spesifiser)" />
+                    <br/>
+                    <p>
+                        Inndragingen gjøres gjeldende fra
+                    </p>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="date" class="form-control" name="gjeldendeFra" required />
+                        </div>
+                    </div>
+                    <br/>
+                    <p>
+                        Enhetsleder skal påse at inndragningen finner sted og at dette følges opp
+                    </p>
+                    <br/>
+                    <p>Narvik den @ViewBag.Date</p>
+                    <hr />
+                    <button type="submit" class="btn btn-lg btn-success">Send til signering og arkivering</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

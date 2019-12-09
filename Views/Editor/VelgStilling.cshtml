@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Velg stilling for " + ViewBag.Navn;
+}
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>
+                    Du står oppført som nærmeste leder på flere stillinger:
+                </p>
+            </div>
+            <div class="panel-body">
+                @for (int i = 0; i < ViewBag.StillingListe.Count; i++)
+                {
+                    <a href="/Editor/Notat/ArbeidsavtaleNyeNarvik?stillingID=@i">@ViewBag.StillingListe[i].TittelStilling @ViewBag.StillingListe[i].Arbeidssted </a>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+</div>

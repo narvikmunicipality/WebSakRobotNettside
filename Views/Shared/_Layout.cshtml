@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <!--<link rel="stylesheet" href="https://gjestportal.narvik.kommune.no/bootstrap-3.3.7/css/bootstrap.min.css" />-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/Site.css" />
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script src="~/Scripts/umd/popper.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="container-fluid">
+        @{ if (ViewBag.ErrorMsgGlobal != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ErrorMsgGlobal</div>
+            }
+        }
+        @{ if (ViewBag.StatusMsgGlobal != null)
+            {
+                <div class="alert alert-success">@ViewBag.StatusMsgGlobal</div>
+            }
+        }
+        <div class="formdiv">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="https://app-uipath.narvik.kommune.no">
+                        <img src="https://www.narvik.kommune.no/design/narvik_kommune/narvik/v2017/assets/images/logo.svg" alt="Byvåpen med tekst">
+                    </a>
+                </div>
+                <div class="col-md-6 text-right">
+                    <h4 class="header-text">Logget inn som @User.Identity.Name</h4>
+                    @if (ViewBag.HelpLink != null)
+                    {
+                        <a class="btn btn-info" href="@ViewBag.HelpLink" target="_blank">
+                            Hjelp | <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                    }
+                    @if (AnsattHelper.IsUserSuper(User.Identity.Name))
+                    {
+                        <a class="btn btn-success" href="/admin/index">
+                            Administrasjon | <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-success" href="/admin/index">
+                            Min side | <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wrap">
+        <div id="main" class="container clear-top">
+            <div class="container body-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>@if (AnsattHelper.IsUserSuper(User.Identity.Name))
+    {
+        <div class="modal-footer">Versjon @TimeHelper.GetBuildDate()</div>
+    }
+</body>
+</html>

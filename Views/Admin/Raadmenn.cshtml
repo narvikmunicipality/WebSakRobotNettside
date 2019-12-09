@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Oversikt over rådmenn med tilgang";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Admin", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>
+                    Rådmenn med tilgang kan se opplastingslogger og status.
+                </p>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            AD-brukernavn
+                        </th>
+                        <th>
+                            E-postadresse
+                        </th>
+                        <th>
+                            Fjern tilgang
+                        </th>
+                    </tr>
+
+                    @foreach (Bundles.LederInfo raadmann in AnsattHelper.Raadmenn)
+                    {
+                        <tr>
+                            <td>
+                                @raadmann.AD
+                            </td>
+                            <td>
+                                @raadmann.EPost
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("DeleteRaadmann", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "delete-raadmann-" + raadmann.AD, enctype = "multipart/form-data", onsubmit = "return confirm('Fjerne tilgangen til " + raadmann.AD + "?')" }))
+                                {
+                                    <input type="hidden" name="ad" value="@raadmann.AD" />
+                                    <button type="submit" class="btn btn-danger">X</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <hr />
+                <button type="button" class="btn btn-success" onclick="showNewSuperUserForm()">Gi tilgang til rådmann</button>
+                <br />
+                <br />
+                @using (Html.BeginForm("AddRaadmann", "Admin", method: FormMethod.Post, htmlAttributes: new { id = "form-raadmann", enctype = "multipart/form-data", onsubmit = "return confirmRaadmann()" }))
+                {
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" id="e-post" name="epostadresse" class="form-control" maxlength="42" required placeholder="E-postadresse" />
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-success">Gi tilgang</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#form-raadmann').hide();
+    });
+
+    function showNewSuperUserForm() {
+        $('#form-raadmann').show();
+    }
+
+    function confirmRaadmann() {
+        var username = $('#e-post').val();
+        return confirm('Gi tilgang til ' + username + '? De vil få innsyn i bruk av systemet og antall sendte varsler.');
+    }
+</script>

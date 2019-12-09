@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewBag.Title = "Opprett e-signeringsoppdrag";
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div id="txt-pg2">
+                    @Html.ActionLink("< Tilbake", "Index", "Signeringsportal", new { area = "" }, new { @class = "btn btn-danger" })
+                    <br />
+                    @if (!ViewBag.Ansattnr.Equals("-1"))
+                    {
+                        <h2>Velg dokument som skal signeres fra listen under.</h2>
+                        <h2>Etter at @ViewBag.Ansattnavn har signert dokumentet, blir det importert i WebSak av roboten og lagt i ansattmappen deres</h2>
+                    }
+                    else
+                    {
+                        <h2>
+                            Velg dokument som skal signeres fra listen under. Skriv inn fødselsnummeret til mottaker og trykk på send.
+                            Etter at hovedmottaker har signert dokumentet, blir det importert i WebSak av roboten og lagt i ansattmappen for denne personen
+                        </h2>
+                        <h3>Husk å dobbeltsjekke at fødselsnummeret er riktig hvis personen ikke er ansatt i Narvik Kommune</h3>
+                        <h2>OBS! Hvis hovedmottaker ikke er registrert i HRM må du ha P-3-tilgang i WebSak for at dokumentet skal bli arkivert korrekt!</h2>
+                    }
+                    <!--
+                    <h3>
+                        Hvis du skal signere en arbeidsavtale må du bruke postens løsning direkte <a href="https://signering.posten.no/virksomhet/#/" target="_blank">(Klikk her)</a>.
+                        Hvis du ikke har tilgang til denne må dette meldes inn i BIM. Ta kontakt
+                        med <a href="mailto:ithjelp@narvik.kommune.no">IT-hjelp</a> hvis du har spørsmål om bruk av e-signering
+                    </h3>-->
+                    <h4>Hvis du vil lese gjennom dokumentet før du oppretter signeringsoppdraget, klikk på 'Vis i google disk' etter å ha valgt et dokument.</h4>
+                </div>
+            </div>
+
+            <div class="panel-body" id="e-sig-form">
+                @using (Html.BeginForm("MakeEsignatureJob", "Upload", null, method: FormMethod.Post, htmlAttributes: new { id = "form-main", enctype = "multipart/form-data", onSubmit = "return confirmSSN()" }))
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" id="dokID" name="dokID" onchange="enableGoogleDiskButton()" required>
+                                    <option disabled selected value="">Velg et dokument</option>
+                                    <option value="0">Arbeidsatavle</option>
+                                    <option value="1">Taushetserklæring</option>
+                                    <option value="2">Databrukeravtale</option>
+                                    <option value="3">Rutiner for bruk av Internett og E-post</option>
+                                    <option value="4">Kaffeavtale Rådhuset</option>
+                                    <option value="5">Kontrakt Nøkkelkort</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="div-upload-file">
+                                <input type="file" name="arbeidsavtale" id="upload-hidden" accept="application/pdf">
+                                <label id="label-upload" class="btn btn-primary" for="upload-hidden">Klikk for å velge hoveddokument</label>
+                                <br />
+                                <p id="selected-file"></p>
+                            </div>
+                            <a id="btn-google-disk" href="https://drive.google.com" target="_blank" class="btn disabled">Vis i google disk</a> <!--Lenke til google disk e.l. der dokumentet ligger-->
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="recipients-div">
+                        @if (!ViewBag.Ansattnr.Equals("-1"))
+                        {
+                            <input type="hidden" name="mottakere" value="@HRMHelper.HRM_FLAG" /><!--flagg for å hente fødselsnummer fra HRM for ansatte-->
+                        }
+                        else
+                        {
+                            <label>Hovedmottaker</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fornavn">Fornavn</label>
+                                        <input type="text" id="e-sign-form-firstname" class="form-control" name="fornavn" autocomplete="off" placeholder="Fornavn" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="etternavn">Etternavn</label>
+                                        <input type="text" id="e-sign-form-surname" class="form-control" name="etternavn" autocomplete="off" placeholder="Etternavn" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" name="mottakere" placeholder="Fødselsnummer (11 siffer)" aria-label="Fødselsnummer (11 siffer)" maxlength="11" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text disabled" id="basic-addon2">X</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-block btn-primary" onclick="addRecipient()">Legg til flere mottakere som skal signere</button>
+                    <br />
+                    <div class="checkbox">
+                        <label style="font-size: 1.5em">
+                            <input type="checkbox" id="self-sign-chk">
+                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            Dette dokumentet skal også signeres av meg
+                        </label>
+                    </div>
+                    <br/>
+                    <div class="checkbox">
+                        <label style="font-size: 1.5em">
+                            <input type="checkbox" id="send-confirmation-chk">
+                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            Jeg ønsker kvittering på e-post med journalpost-ID når dokumentet har blitt signert og arkivert
+                        </label>
+                    </div>
+                    <br />
+                    <input type="hidden" id="self-sign" name="selfSign" value="false" />
+                    <input type="hidden" id="send-confirmation" name="sendConfirmation" value="false" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btn-submit" name="submit" class="btn btn-success btn-lg btn-block">Send dokument til (1) mottaker</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var recipientIndex = 0;
+    var recipientCounter = 1;
+
+    var diskUrls = [
+        "@GoogleDiskLenker.Arbeidskontrakt",
+        "@GoogleDiskLenker.Taushetserklæring",
+        "@GoogleDiskLenker.Databrukeravtale",
+        "@GoogleDiskLenker.Epostrutiner",
+        "@GoogleDiskLenker.Kaffeavtale",
+        "@GoogleDiskLenker.Nøkkelkort"
+    ];
+
+    $(document).ready(function () {
+
+        document.getElementById('self-sign-chk').onclick = function () {
+            updateCheckboxValues();
+        };
+
+        document.getElementById('send-confirmation-chk').onclick = function () {
+            updateCheckboxValues();
+        };
+
+        $('#div-upload-file').hide();
+
+        document.getElementById('upload-hidden').onchange = function () {
+            $('#selected-file').text('Valgt hoveddokument: ' + this.value.split('\\').pop());
+        };
+    });
+
+    function confirmSSN() {
+
+        var mottakere = $("input[name='mottakere']")
+            .map(function () { return $(this).val(); }).get();
+
+        var mottaker1 = mottakere[0];
+
+        if (mottaker1 != "-999") {
+            return confirm('Oppraget sendes nå til ' + mottaker1 + '. Er dette riktig?');
+        }
+        else {
+            return true;
+        }
+    }
+
+    function removeRecipient(idx) {
+        $('#recipient-' + idx).remove();
+        if (recipientCounter > 0)
+            recipientCounter--;
+
+        updateSubmitButtonText(recipientCounter);
+    }
+
+    function addRecipient() {
+
+        $('#recipients-div').append(
+            '<div id="recipient-' + recipientIndex + '" class="row">' +
+            '<div class="col-md-8">' +
+            '<label>Signatur ' + (recipientIndex + 2) + '</label>' +
+                '<div class="input-group mb-3">'+
+                    '<input type="number" class="form-control" name="mottakere" placeholder="Fødselsnummer (11 siffer)" aria-label="Fødselsnummer (11 siffer)" maxlength="11" required>'+
+                        '<div class="input-group-append">'+
+                            '<a href="#" onclick="removeRecipient(' + recipientIndex + ')"><span class="input-group-text btn-danger" id="basic-addon2">X</span></a>'+
+                        '</div>'+
+                '</div>'+
+             '</div>'+
+          '</div>');
+
+        recipientIndex++;
+        recipientCounter++;
+        updateSubmitButtonText(recipientCounter);
+    }
+
+    function updateSubmitButtonText(count) {
+        $('#btn-submit').html("Send dokument til " + count + " mottaker(e)");
+    }
+
+    function enableGoogleDiskButton() {
+        var idx = $('#dokID').val();
+        if (idx == 0) {
+            // arbeidsavtaler
+            showUploadButton();
+            $('#self-sign-chk').prop('checked', true);
+        } else {
+            showGoogleDiskButton();
+            $('#btn-google-disk').removeClass('disabled');
+            $('#btn-google-disk').addClass('btn-info');
+            $('#btn-google-disk').attr("href", "@GoogleDiskLenker.RootURL" + diskUrls[idx]);
+        }
+    }
+
+    function showUploadButton() {
+        $('#btn-google-disk').hide();
+        $('#div-upload-file').show();
+        $('#upload-hidden').prop('required', true);
+    }
+
+    function showGoogleDiskButton() {
+        $('#btn-google-disk').show();
+        $('#div-upload-file').hide();
+        $('#upload-hidden').prop('required', false);
+    }
+
+    function updateCheckboxValues() {
+        $('#self-sign').val($('#self-sign-chk').is(':checked'));
+        $('#send-confirmation').val($('#send-confirmation-chk').is(':checked'));
+    }
+
+</script>

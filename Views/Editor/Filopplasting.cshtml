@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Filopplasting for " + ViewBag.Dokumentnavn;
+}
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+               
+                <div id="txt-pg2">
+                    @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                    <h2 id="active-document-name"></h2>
+                    <h3>
+                        @ViewBag.Heading
+                        <br />NB: hoveddokumentet skal være i pdf-format.
+                    </h3>
+                    <h4 id="file-tips-text">@Html.Raw(ViewBag.Hint)</h4>
+                </div>
+            </div>
+                
+            <div class="panel-body" id="fileUploadForm">
+                @using (Html.BeginForm("UploadFiles", "Upload", routeValues: new { ViewBag.Token }, method: FormMethod.Post, htmlAttributes: new { id = "form-main", enctype = "multipart/form-data" }))
+                {
+                    <br />
+                    <input type="file" name="hoveddokument" id="upload-hidden" accept="application/pdf" required>
+                    <label id="label-upload" class="btn btn-lg btn-primary btn-block" for="upload-hidden">Klikk for å velge hoveddokument</label>
+                    <br />
+                    <br />
+                    <p id="selected-file"></p>
+                    <hr>
+                    <button type="button" id="btn-add-vedlegg" class="btn btn-primary">Klikk for å legge til vedlegg (valgfritt)</button>
+                    <br />
+                    <br />
+                    <div class="clearfix"></div>
+                    <div id="div-vedlegg"></div>
+                    <br />
+                    <input type="hidden" id="hovedfilnavn" name="hovedfilnavn" value="@ViewBag.Dokumentnavn" />
+                    <input type="hidden" id="journalpostnavn" name="journalpostnavn" value="@ViewBag.Journalpostnavn" />
+                    <input type="hidden" id="sak" name="sak" value="@ViewBag.Sakstype" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btn-submit" name="submit" class="btn btn-success btn-lg btn-block">Send inn hoveddokument og 0 vedlegg</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/app-uipath/vedlegg-scripts.js"></script>

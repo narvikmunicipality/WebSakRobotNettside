@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Innkalling til dialogmøte";
+}
+
+<input type="hidden" id="autocomplete-text" value="@ViewBag.AutocompleteText" />
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h3>
+                    @ViewBag.Heading
+                </h3>
+            </div>
+            <div class="panel-body" id="div-notat-form">
+                @using (Html.BeginForm("UploadNote", "Upload", routeValues: new { ViewBag.Token }, method: FormMethod.Post, htmlAttributes: new { id = "form-main", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="journalpostnavn-meeting" name="journalpostnavn" placeholder="Brevtittel" required />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" id="btn-autocomplete" class="btn btn-primary">Sett inn maltekst for dialogmøte 1</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="editor" class="form-control" style="overflow:scroll; height:420px; max-height:550px; padding:10px"></div>
+                    <input type="hidden" id="notat-text" name="notatText" />
+                    <input type="hidden" name="hovedfilnavn" value="Møteinnkalling" />
+                    <input type="hidden" id="ansattnr" name="ansattnr" value="@ViewBag.Ansattnr" />
+                    <input type="hidden" name="sak" value="0" />
+                    <input type="hidden" id="send-kopi" name="sendCopy" value="True" />
+                    <br />
+                    <br />
+                    <div id="div-vedlegg"></div>
+                    <div class="row justify-content-between">
+                        <div class="col-md-7">
+                            <button type="submit" id="btn-submit" name="submit" class="btn btn-success btn-lg btn-block" onclick="submitNoteText()">Send ut brev</button>
+                        </div>
+                        <div class="col align-self-end">
+                            <button type="button" id="btn-add-vedlegg" class="btn btn-lg btn-primary">Legg til vedlegg (valgfritt)</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap-wysiwyg.js"></script>
+<script src="~/Scripts/app-uipath/editor-scripts.js"></script>
+<script src="~/Scripts/app-uipath/vedlegg-scripts.js"></script>

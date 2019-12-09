@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Nytt notat for " + ViewBag.Ansattnavn;
+}
+
+<input type="hidden" id="autocomplete-text" value="@ViewBag.AutocompleteText" />
+<input type="hidden" id="editor-title" value="@ViewBag.EditorTitle" />
+
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                @Html.ActionLink("< Tilbake til meny", "VelgDokument", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h3>@Html.Raw(ViewBag.Heading)</h3>
+                <h4>@Html.Raw(ViewBag.Hint)</h4>
+            </div>
+            <div class="panel-body" id="div-notat-form">
+                <div id="alerts"></div>
+                <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                    <div class="btn-group">
+                        <a class="btn" data-edit="fontSize 5"><font size="3">Overskrift</font></a>
+                        <a class="btn" id="btn-textsize-normal" data-edit="fontSize 3"><font size="3">Normal</font></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="bold" title="Fet (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+                        <a class="btn" data-edit="italic" title="Kursiv (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+                        <a class="btn" data-edit="underline" title="Understrek (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="insertunorderedlist" title="Kulepunkter"><i class="icon-list-ul"></i></a>
+                        <a class="btn" data-edit="insertorderedlist" title="Nummerert liste"><i class="icon-list-ol"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="justifyleft" title="Venstrejustér (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+                        <a class="btn" data-edit="justifycenter" title="Sentrer (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+                        <a class="btn" data-edit="justifyright" title="Høyrejustér (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+                        <a class="btn" data-edit="justifyfull" title="Blokkjustér (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="undo" title="Angre (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+                        <a class="btn" data-edit="redo" title="Gjør om (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+                    </div>
+                    <div id="div-autocomplete-button" class="btn-group">
+                        @{
+                            if (ViewBag.AutocompleteText != null)
+                            {
+                                <button id="btn-autocomplete" type="button" class="btn btn-primary">Fyll ut</button>
+                            }
+                        }
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("UploadNote", "Upload", routeValues: new { ViewBag.Token }, method: FormMethod.Post, htmlAttributes: new { id = "form-main", enctype = "multipart/form-data" }))
+                {
+                    <div id="editor" class="form-control" style="overflow:scroll; height:420px; max-height:550px; padding:10px">
+                        @Html.Raw(ViewBag.EditorContent)
+                    </div>
+                    <input type="hidden" id="notat-text" name="notatText" />
+                    <input type="hidden" id="hovedfilnavn" name="hovedfilnavn" value="@ViewBag.Dokumentnavn" />
+                    <input type="hidden" name="journalpostnavn" id="journalpostnavn" value="@ViewBag.Journalpostnavn" />
+                    <input type="hidden" name="sak" value="@ViewBag.Sakstype" />
+                    <br />
+                    <div id="div-vedlegg"></div>
+                    <div class="row">
+                        <div class="col align-self-end">
+                            <button type="button" id="btn-add-vedlegg" class="btn btn-primary">Legg til vedlegg (valgfritt)</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="checkbox">
+                        <label style="font-size: 1.5em">
+                            @if (ViewBag.SendCopy)
+                            {
+                                <input type = "checkbox" id = "send-kopi-chk" checked>
+                            }
+                            else
+                            {
+                                <input type = "checkbox" id = "send-kopi-chk">
+                            }
+                            
+                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            Send kopi til den ansatte via elektronisk post (SvarUt)
+                        </label>
+                    </div>
+                    <input type="hidden" id="send-kopi" name="sendCopy" />
+                    <div class="row justify-content-between">
+                        <div class="col-md-12">
+                            <button type="submit" id="btn-submit" name="submit" class="btn btn-success btn-lg btn-block">Send inn</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+<script src="~/Scripts/bootstrap-wysiwyg.js"></script>
+<script src="~/Scripts/app-uipath/editor-scripts.js"></script>
+<script src="~/Scripts/app-uipath/vedlegg-scripts.js"></script>

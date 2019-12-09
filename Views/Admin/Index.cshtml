@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = (AnsattHelper.IsUserSuper(User.Identity.Name)) ? "Administrasjon" : "Min side";
+}
+<div class="container">
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "Index", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+            </div>
+            <div class="panel-body">
+                @Html.ActionLink("Mine e-signeringsoppdrag", "Esignering", "Admin")
+                <hr />
+                @if (AnsattHelper.IsUserRaadmann(User.Identity.Name))
+                {
+                    @Html.ActionLink("Status og logger", "StatusLogger", "Admin")
+                    <hr />
+                }
+                @if (AnsattHelper.IsUserSuper(User.Identity.Name))
+                {
+                    @Html.ActionLink("Legg til eller fjern testbrukere", "TestBrukere", "Admin")
+                    <hr />
+                    @Html.ActionLink("Legg til eller fjern superbrukere", "SuperBrukere", "Admin")
+                    <hr />
+                    @Html.ActionLink("Legg til eller fjern rådmannstilganger", "Raadmenn", "Admin")
+                    <hr />
+                    @Html.ActionLink("Legg til eller fjern dokumenter for e-signering", "TestBrukere", "Admin")
+                    <hr />
+                    @Html.ActionLink("Test feilmelding", "TriggerRandomException", "Admin")
+                    <hr />
+                    @Html.ActionLink("Kjør ESignPoller.PollForChange() manuelt", "StartESignPoll", "Admin", new { @onclick = "return confirm('Kjøre manuell polling?')" })
+                    <hr />
+                    @Html.ActionLink("Oppdater e-signeringskø (kjører EsignPoller.Init())", "ResetESignPoll", "Admin", new { @onclick = "return confirm('Oppdatere e-signeringskø?')" })
+                    <hr />
+                    <!--Html.ActionLink("Test byeah", "TestByeah", "Admin")-->
+                }
+            </div>
+        </div>
+    </div>
+</div>

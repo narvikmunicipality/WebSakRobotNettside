@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Velkommen til e-signeringsportalen";
+}
+
+<div class="container">
+    <input type="hidden" id="status-code" value="@ViewBag.StatusCode" />
+    <div class="formdiv">
+        <div id="alert-error">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Melding fra server:</h4>@ViewBag.ErrorMsg
+            </div>
+        </div>
+        <div id="alert-warning">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">Melding fra server:</h4>@ViewBag.ErrorMsg
+            </div>
+        </div>
+    </div>
+    <div class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake til meny", "Index", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h2>@ViewBag.Title</h2>
+                <p>Først et par spørsmål...</p>
+            </div>
+            <div class="panel-body">
+                <h4>Er mottaker ansatt i Narvik Kommune pr. dags dato?</h4>
+                <div id="div-ansatt-buttons">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-lg btn-block btn-success" onclick="setIsAnsatt(true)">Ja</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-lg btn-block btn-danger" onclick="setIsAnsatt(false)">Nei</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="div-is-leder">
+                    <hr />
+                    <h4>Skal du stå som saksbehandler i WebSak for dokumentet?</h4>
+                    <div id="div-leder-buttons">
+                        <br />
+                        <p>Merk: hvis mottaker ikke er ansatt i Narvik kommune kan bare ledere opprette signeringsoppdrag </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-lg btn-block btn-success" onclick="setIsLeder(true)">Ja</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-lg btn-block btn-danger" onclick="setIsLeder(false)">Nei</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="hint-text-2"></p>
+                </div>
+                @using (Html.BeginForm("HentAnsattInfo", "Signeringsportal", routeValues: new { ViewBag.Token }, method: FormMethod.Post, htmlAttributes: new { id = "form-main", enctype = "multipart/form-data" }))
+                {
+                    <p id="hint-text-1"></p>
+                    <input type="number" id="input-ansattNr" class="form-control" name="ansattNr" placeholder="Ansattnummer" required />
+                    <br />
+                    <button type="submit" id="btn-submit" class="btn btn-lg btn-block btn-success">Neste</button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var erMottakerAnsatt = false;
+
+    $(document).ready(function () {
+
+        $('#div-is-leder').hide();
+        $('#btn-submit').prop('disabled', true);
+        $('#input-ansattNr').hide();
+
+        var statusCode = $('#status-code').val();
+
+        console.log(statusCode);
+
+        if (statusCode != 1) {
+            $('#alert-error').prop('hidden', true);
+        }
+        if (statusCode != 2) {
+            $('#alert-warning').prop('hidden', true);
+            $('#text-hint-ssn').prop('hidden', true);
+        }
+    });
+
+    function setIsAnsatt(isAnsatt) {
+
+        if (isAnsatt) {
+            $('#hint-text-1').html('Mottaker er ansatt i Narvik kommune - skriv inn ansattnummer og trykk på "Neste"'); // tast inn ansattnummer
+            $('#input-ansattNr').show();
+            $('#input-ansattNr').focus();
+            $('#btn-submit').prop('disabled', false);
+        } else {
+            //$('#hint-text-1').html("Mottaker er ikke ansatt i Narvik kommune - skriv inn fødselsnummeret (11 siffer) for å fortsette..."); // tast inn fødselsnummer
+            $('#input-ansattNr').val(-1);
+            $('#div-is-leder').show();
+            $('#hint-text-1').hide();
+            //$('#input-ansattNr').prop('placeholder', "Fødselsnummer (11 siffer)");
+        }
+        erMottakerAnsatt = isAnsatt;
+
+        $('#div-ansatt-buttons').hide();
+    }
+
+    function setIsLeder(isLeder) {
+        if (isLeder) {
+            $('#btn-submit').prop('disabled', false);
+            $('#hint-text-1').show();
+            if (erMottakerAnsatt)
+                $('#input-ansattNr').show();
+
+        } else {
+            alert('Beklager, bare nærmeste leder kan settes som saksansvarlig WebSak.Det undersøkes alternativer - følg med');
+            $('#hint-text-2').html("Beklager, bare nærmeste leder kan settes som saksansvarlig i WebSak. Det undersøkes alternativer - følg med"); // tast inn ansattnummer
+        }
+
+        $('#div-leder-buttons').hide();
+    }
+
+</script>

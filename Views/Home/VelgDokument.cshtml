@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Velg dokument";
+}
+
+<input id="hidden-ansattnr" type="hidden" value="@ViewBag.Ansattnr" />
+<input id="docID" type="hidden" value="@ViewBag.DocID" />
+
+
+<div class="container">
+    <div class="formdiv">
+        <div id="panel-sykefravaer" class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "IdentifiserAnsatt", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h1>Dokumenter angående sykefravær</h1>
+                <h3>
+                    For å arkivere oppfølgingsnotater angående @ViewBag.Ansattnavn i WebSak, trykk på dagen det gjelder.
+                    Du trenger ikke åpne WebSak. Roboten fikser alt og er din beste venn &lt;3
+                </h3>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.ActionLink("Dag 1 (Valgfritt)", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dag1 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ActionLink("Dag 5", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dag5 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ActionLink("Dag 14", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dag14 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ActionLink("Dag 28", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dag28 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            @Html.ActionLink("Dialogmøte 1", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dialogmøte1 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ActionLink("Dialogmøte 2", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dialogmøte2 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ActionLink("Dialogmøte 3", "Notat", "Editor", routeValues: new { docID = Dokumenter.Dialogmøte3 }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.ActionLink("Generelt fraværsnotat/tilretteleggingssamtale", "Notat", "Editor", routeValues: new { docID = Dokumenter.GenereltFraværsnotat }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.ActionLink("Møteinnkalling til oppfølgingssamtale", "Notat", "Editor", routeValues: new { docID = Dokumenter.MøteinnkallingOppfølgingssamtale }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.ActionLink("Generelt dokument - sykefravær", "Notat", "Editor", routeValues: new { docID = Dokumenter.GenereltDokument }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="select-docs" class="formdiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @Html.ActionLink("< Tilbake", "IdentifiserAnsatt", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                <h1>Ansattforhold</h1>
+                <h3>
+                    Du laster nå opp dokumenter som gjelder ansettelsesforhold for @ViewBag.AnsattNavn. Velg type dokument ved å trykke på knappene under:
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ActionLink("Digital arbeidskontrakt", "Notat", "Editor", routeValues: new { docID = Dokumenter.DigitalArbeidskontrakt }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Permisjonssøknad", "Notat", "Editor", routeValues: new { docID = Dokumenter.Permisjonssøknad }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ActionLink("Utviklings-/medarbeidersamtale", "Notat", "Editor", routeValues: new { docID = Dokumenter.Utviklingssamtale }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Attest på utført tjeneste", "Notat", "Editor", routeValues: new { docID = Dokumenter.Arbeidsattest }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ActionLink("Vedlegg til søknad om politiattest - formål", "Notat", "Editor", routeValues: new { docID = Dokumenter.PolitiattestFormål }, htmlAttributes: new { @class = "btn btn-primary btn-block ansattnr-not-required" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Bekreftelse på fremlagt og godkjent politiattest", "Notat", "Editor", routeValues: new { docID = Dokumenter.FremlagtPolitiattest }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                </div>
+                <br />
+                @if (ViewBag.CanSeeTestUsers)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.ActionLink("Arbeidsavtale Nye Narvik kommune", "Notat", "Editor", routeValues: new { docID = Dokumenter.ArbeidsavtaleNyeNarvik }, htmlAttributes: new { @class = "btn btn-danger btn-block" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.ActionLink("Søknad om anvisningsfullmakt", "Notat", "Editor", routeValues: new { docID = Dokumenter.Anvisningsfullmakt }, htmlAttributes: new { @class = "btn btn-danger btn-block" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.ActionLink("Tilbaketrekking anvisningsfullmakt", "Notat", "Editor", routeValues: new { docID = Dokumenter.TilbaketrekkingAnvisningsfullmakt }, htmlAttributes: new { @class = "btn btn-danger btn-block" })
+                        </div>
+                    </div>
+                }
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ActionLink("Generelt dokument - ansattforhold", "Notat", "Editor", routeValues: new { docID = Dokumenter.GenereltDokument }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Generelt utgående dokument - ansattforhold", "Notat", "Editor", routeValues: new { docID = Dokumenter.GenereltUtgåendeDokument }, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/app-uipath/velg-dokument-scripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var docID = $('#docID').val();
+
+        if (docID == "Sykefraværsmappe") {
+            $('#select-docs').hide();
+        } else {
+            $('#panel-sykefravaer').hide();
+        }
+    });
+
+    var hey = ["why yes", "this", "is", "nice"];
+
+    wat(...hey);
+
+    function wat(hello) {
+
+    }
+</script>
