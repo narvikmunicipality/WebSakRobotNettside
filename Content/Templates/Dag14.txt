@@ -1,0 +1,31 @@
+﻿<font size='3'>
+<b>Hvordan går det?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Er det noe jeg kan hjelpe med (omplassering, hjelpemidler, endring av arbeidsoppgaver for en periode)?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Er det noe du går og tenker på i forhold til å vende tilbake til arbeidet?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Hvordan forholder du deg til sosiale medier i fraværsperioden?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Hvor lenge forventer du å være borte fra jobb?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Skyldes fraværet forhold på arbeidsplassen?</b>
+<br />
+<br />
+<br />
+</font>

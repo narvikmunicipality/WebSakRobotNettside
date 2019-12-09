@@ -1,0 +1,7 @@
+﻿{0}, [<b>FØDSELSDATO</b>], har vært ansatt i Narvik Kommune i perioden [<b>DATO</b>] til [<b>DATO</b>].
+<br />
+<br />
+[<b>KORT BESKRIVELSE AV SELSKAPETS VIRKSOMHET</b>]
+<br />
+<br />
+{0} har vært ansatt som [<b>STILLING</b>]. Arbeidet har bestått i [<b>KORT BESKRIVELSE AV ARBEIDET</b>]

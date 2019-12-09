@@ -1,0 +1,48 @@
+﻿<html>
+<meta charset="UTF-8" />
+
+<body style="padding:60px; font-family:sans-serif">
+<h1>Bekreftelse på formål</span></h1>
+<h1 style="color:red">Vedlegg til søknad om politiattest</span></h1>
+<br >
+<br >
+<p style="color:red">Fylles ut av arbeids-/oppdragsgiver og legges ved søknad om politiattest.<p>
+
+<table border="1" style="width:100%; border-collapse:collapse">
+<tr>
+<td colspan="2" style="padding:4px">Navn <h3>{0}</h3> </td>
+</tr>
+<tr>
+<td colspan="2" style="padding:4px">Fødselsnummer <h3>{1}</h3> </td>
+</tr>
+<tr>
+<td colspan="2" style="padding:4px">Formål med politiattest <h3>{2}</h3> </td>
+</tr>
+<tr>
+<td style="padding:4px">Stilling/oppdrag <h3>{3}</h3> </td><td>Stillingstype <h3>{4}</h3> </td>
+</tr>
+<tr>
+<td colspan="2" style="padding:4px">Lovhjemmel<h3>{5}</h3> </td>
+</tr>
+<tr>
+<td colspan="2" style="padding:4px">Arbeids-/oppdragsgiver (den som krever attest)<h3>{6}</h3> </td>
+</tr>
+<tr>
+<td colspan="2" style="padding:4px">Kontaktinformasjon til arbeids-/oppdragsgiver: (telefon/e-postadresse, dersom vi behøver mer informasjon)<h3>{7}</h3> </td>
+</tr>
+</table>
+<br >
+<br >
+<table width="100%">
+<tr>
+<td>
+<h4 style="border-bottom:1px solid black; width: 250px">{8}</h4>
+Sted og dato
+</td>
+<td align="right">
+<img src="C:/inetpub/wwwroot/WebSakOpplaster/Content/logo.png" width="70%" alt="Byvåpen med tekst">
+</tr>
+</table>
+
+</body>
+</html>

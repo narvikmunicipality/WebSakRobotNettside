@@ -1,0 +1,64 @@
+﻿<html>
+<meta charset="UTF-8" />
+
+<body style="padding:60px; font-family:sans-serif">
+<style type="text/css">
+td %$ padding-bottom: 10px; $%
+</style>
+<h1>Arbeidsavtale Nye Narvik kommune</span></h1>
+<br >
+<table border="0" style="width:100%; border-collapse:collapse">
+<tr style="padding:14px">
+<td valign="top">1.<br > </td>
+<td>Navn: {0}<br >
+Personnr.: {1} har inngått følgende arbeidsavtale med Narvik kommune.</td>
+</tr>
+<tr>
+<td valign="top">2.</td>
+<td>Arbeidssted for tiden: {2} (Dersom man ikke har fast arbeidsplass, skal det opplyses om at arbeidstaker arbeider
+på forskjellige steder, samt forretningsadressen eller eventuell hjemstedsadresse til arbeidsgiver). Arbeidsgiver tar forbehold om at arbeidssted
+kan endres etter behov.</td>
+</tr>
+<tr>
+<td valign="top">3.</td><td>Arbeidets art: {3}</td>
+</tr>
+<tr>
+<td td valign="top">4.</td><td>Stillingen tiltres: 01.01.2020 </td>
+</tr>
+<tr>
+<td valign="top">5.</td><td>Tilsettingsforhold: Midlertidig tilsetting<br >
+Hjemmel: §14-9 (1) bokstav {4}  Varighet: {5} (sluttdato)
+ </td>
+</tr>
+<tr>
+<td td valign="top">6.</td><td>Stillingsprosent: {6}</td>
+</tr>
+<tr>
+<td valign="top">7.</td><td>Ansatte i prøvetid, viderefører prøvetiden i henhold til {7} måneder, jf. arbeidsmiljøloven § 15-6 (3). Utløper: {8}<br >
+I prøveperioden gjelder en gjensidig oppsigelsesfrist på 14 dager, jf. arbeidsmiljøloven § 15-3 (7) og Hovedtariffavtalen kapittel 1 § 3 punkt 3.2. Dersom arbeidstakeren har vært fraværende fra arbeidet i prøvetiden, kan prøvetiden forlenges med en lengde som tilsvarer lengden av fraværet, jf. arbeidsmiljøloven § 15-6 (4).
+Arbeidstaker må få skriftlig melding om forlengelsen innen utløpet av prøvetiden.
+</td>
+</tr>
+<tr>
+<td valign="top">8.</td><td>Oppsigelsesfrist: Etter utløp av prøvetiden er det gjensidig oppsigelsestid som fastsatt i Hovedtariffavtalen § 3 for henholdsvis midlertidige avtaler og faste avtaler. I tillegg kan lengre oppsigelsesfrist framgå av § 15-3 (3).</td>
+</tr>
+<tr>
+<td valign="top">9.</td><td>Lønn m.m.: Lønn og annen godtgjørelse ved tiltredelse i henhold til gjeldende tariffavtale.<br >
+Årslønn {9}. Lønn utbetales den 12. hver måned<br >
+Annet: {10}
+</td>
+</tr>
+<tr>
+<td valign="top">10.</td><td>Ferie: Ferie og feriepenger i henhold til ferieloven og Hovedtariffavtalen.</td>
+</tr>
+</tr>
+<tr>
+<td valign="top">11.</td><td>Arbeidstid. Normalarbeidstid i henhold til gjeldende tariffavtale og arbeidsplan.
+<br >
+Oppgi lengden av den avtalte p.t. daglige og ukentlige arbeidstiden og om det er en avtale p.t. om særlig arbeidstidsordning, jf. § 10-2 andre, tredje og fjerde ledd.
+</td>
+</tr>
+</table>
+
+</body>
+</html>

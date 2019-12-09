@@ -1,0 +1,85 @@
+﻿
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Silvia sin */
+.formdiv {
+    max-width: 750px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.header-text {
+    color:#434343;
+}
+
+label {
+    cursor: pointer;
+}
+
+#upload-hidden {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none;
+}
+
+.ansattnr-not-required {
+
+}
+
+// https://bootsnipp.com/snippets/oPgeG
+.checkbox label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+}
+
+    .checkbox .cr .cr-icon {
+        position: absolute;
+        font-size: .8em;
+        line-height: 0;
+        top: 50%;
+        left: 15%;
+    }
+
+.checkbox label input[type="checkbox"] {
+    display: none;
+}
+
+    .checkbox label input[type="checkbox"] + .cr > .cr-icon {
+        opacity: 0;
+    }
+
+    .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon {
+        opacity: 1;
+    }
+
+    .checkbox label input[type="checkbox"]:disabled + .cr {
+        opacity: .5;
+    }

@@ -1,0 +1,7 @@
+﻿Den {0} har {1} fremlagt politiattest. Attesten gjelder ansettelse i stilling
+som [<b>stillingstittel</b>] i Narvik kommune. Attesten er godkjent av nærmeste leder og deretter makulert.
+<br />
+<br />
+{2}
+<br />
+Nærmeste leder

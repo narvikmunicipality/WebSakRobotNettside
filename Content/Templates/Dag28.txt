@@ -1,0 +1,26 @@
+﻿<font size='3'>
+<b>Hvordan går det?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Hvordan er utsiktene for å komme helt eller delvis tilbake på jobb?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Er det noe jeg kan hjelpe med?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Er det noe du går og tenker på  i forhold til å vende tilbake på jobb?</b>
+<br />
+<br />
+<br />
+<br />
+<b>Hva skal til for at du kan gjenoppta arbeid eventuelt på nedsatt tid eller med midlertidig tilrettelegging?</b>
+<br />
+<br />
+<br />
+</font>
